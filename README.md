@@ -58,7 +58,7 @@ sagemaker_simple_estimator.fit()
 tensors_path = sagemaker_simple_estimator.latest_job_debugger_artifacts_path()
 
 import smdebug.trials as smd
-trial = smd.create_trial(out_dir=tensors_path)
+trial = smd.create_trial(path=tensors_path)
 print(f"Saved these tensors: {trial.tensor_names()}")
 print(f"Loss values during evaluation were {trial.tensor('CrossEntropyLoss:0').values(mode=smd.modes.EVAL)}")
 ```
@@ -77,7 +77,7 @@ pip install smdebug
 To use Amazon SageMaker Debugger, simply add a callback hook:
 ```python
 import smdebug.tensorflow as smd
-hook = smd.KerasHook(out_dir='~/smd_outputs/')
+hook = smd.KerasHook(path='~/smd_outputs/')
 
 model = tf.keras.models.Sequential([ ... ])
 model.compile(
@@ -90,7 +90,7 @@ model.fit(x_train, y_train, epochs=2, callbacks=[hook])
 model.evaluate(x_test, y_test, callbacks=[hook])
 
 # Create a trial to inspect the saved tensors
-trial = smd.create_trial(out_dir='~/smd_outputs/')
+trial = smd.create_trial(path='~/smd_outputs/')
 print(f"Saved these tensors: {trial.tensor_names()}")
 print(f"Loss values during evaluation were {trial.tensor('CrossEntropyLoss:0').values(mode=smd.modes.EVAL)}")
 ```
